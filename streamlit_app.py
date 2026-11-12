@@ -29,7 +29,14 @@ warnings.filterwarnings("ignore")
 # =============================================================================
 st.set_page_config(page_title="B2B Book Distributor | Decision Support", page_icon="📘", layout="wide")
 
-DATA_FILE = Path(__file__).parent / "data" / "b2b_transactions.parquet"
+APP_DIR = Path(__file__).parent
+# The data file may be in the repository root or in a "data" folder
+_CANDIDATES = [APP_DIR / "data" / "b2b_transactions.parquet", APP_DIR / "b2b_transactions.parquet"]
+DATA_FILE = next((p for p in _CANDIDATES if p.exists()), None)
+if DATA_FILE is None:
+    st.error("Data file `b2b_transactions.parquet` was not found. Upload it to the repository root or to a "
+             "folder named `data` next to streamlit_app.py.")
+    st.stop()
 
 NAVY, ORANGE, GREEN, RED, GREY = "#16365C", "#F28C28", "#2A9D8F", "#D1495B", "#8D99AE"
 PALETTE = [NAVY, ORANGE, GREEN, RED, "#6D597A", "#E9C46A", GREY, "#264653"]
