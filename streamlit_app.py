@@ -383,7 +383,7 @@ def excel_file(sheets: dict) -> bytes:
 # =============================================================================
 # 5. HEADER AND KPI ROW
 # =============================================================================
-st.title("📘 B2B Book Distributor — Decision Support Dashboard")
+st.title("B2B Book Distributor: Decision Support Dashboard")
 st.markdown(f'<p class="small">{period[0]:%d %b %Y} – {period[1]:%d %b %Y} · Sales, Marketing and '
             f'Supply Chain views · all figures react to the sidebar filters</p>', unsafe_allow_html=True)
 
