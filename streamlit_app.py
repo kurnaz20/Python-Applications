@@ -68,11 +68,11 @@ def num(x: float) -> str:
 
 
 def insight(text: str):
-    st.markdown(f'<div class="note">💡 <b>Insight:</b> {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="note"> <b>Insight:</b> {text}</div>', unsafe_allow_html=True)
 
 
 def action(text: str):
-    st.markdown(f'<div class="do">✅ <b>Action:</b> {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="do"> <b>Action:</b> {text}</div>', unsafe_allow_html=True)
 
 
 def show(fig, height=380):
