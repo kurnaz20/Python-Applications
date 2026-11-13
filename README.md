@@ -1,4 +1,4 @@
-# B2B Book Distributor — Decision Support Dashboard
+# B2B Book Distributor: Decision Support Dashboard
 
 ISL467E Management Engineering Applications with Python · Homework I
 
