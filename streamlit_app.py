@@ -1,5 +1,5 @@
 """
-B2B Book Distributor: Intelligent Decision Support Dashboard
+B2B Book Distributor - Intelligent Decision Support Dashboard
 ISL467E Management Engineering Applications with Python - Homework I
 
 Departments served: Sales, Marketing, Supply Chain Management
@@ -38,18 +38,21 @@ if DATA_FILE is None:
              "folder named `data` next to streamlit_app.py.")
     st.stop()
 
-NAVY, ORANGE, GREEN, RED, GREY = "#16365C", "#F28C28", "#2A9D8F", "#D1495B", "#8D99AE"
-PALETTE = [NAVY, ORANGE, GREEN, RED, "#6D597A", "#E9C46A", GREY, "#264653"]
+# Purple-pink theme
+NAVY, ORANGE, GREEN, RED, GREY = "#5B2A86", "#E75A9C", "#9D6BD8", "#C2185B", "#A89CB8"
+PALETTE = [NAVY, ORANGE, GREEN, RED, "#F4A7C8", "#3E1C5E", GREY, "#D98FD0"]
+GROWTH_SCALE = [[0, "#C2185B"], [0.5, "#F5EEF8"], [1, "#5B2A86"]]   # decline = pink, growth = purple
 px.defaults.template = "plotly_white"
 px.defaults.color_discrete_sequence = PALETTE
 
 st.markdown("""
 <style>
 .block-container {padding-top: 1.4rem;}
-div[data-testid="stMetric"] {background:#F5F7FA; border:1px solid #E1E6EE; border-radius:10px; padding:10px 14px;}
-.note  {background:#FFF6EC; border-left:4px solid #F28C28; padding:9px 13px; border-radius:6px; margin:6px 0 10px 0;}
-.do    {background:#EAF6F4; border-left:4px solid #2A9D8F; padding:9px 13px; border-radius:6px; margin:6px 0 10px 0;}
-.small {color:#6B7280; font-size:0.85rem;}
+div[data-testid="stMetric"] {background:#F8F2FC; border:1px solid #E6D6F3; border-radius:10px; padding:10px 14px;}
+.note  {background:#FDF0F6; border-left:4px solid #E75A9C; padding:9px 13px; border-radius:6px; margin:6px 0 10px 0;}
+.do    {background:#F3ECFA; border-left:4px solid #5B2A86; padding:9px 13px; border-radius:6px; margin:6px 0 10px 0;}
+h1, h2, h3 {color:#3E1C5E;}
+.small {color:#7A6A8A; font-size:0.85rem;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -68,11 +71,11 @@ def num(x: float) -> str:
 
 
 def insight(text: str):
-    st.markdown(f'<div class="note"> <b>Insight:</b> {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="note">💡 <b>Insight:</b> {text}</div>', unsafe_allow_html=True)
 
 
 def action(text: str):
-    st.markdown(f'<div class="do"> <b>Action:</b> {text}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="do">✅ <b>Action:</b> {text}</div>', unsafe_allow_html=True)
 
 
 def show(fig, height=380):
@@ -383,7 +386,7 @@ def excel_file(sheets: dict) -> bytes:
 # =============================================================================
 # 5. HEADER AND KPI ROW
 # =============================================================================
-st.title("B2B Book Distributor: Decision Support Dashboard")
+st.title("📘 B2B Book Distributor — Decision Support Dashboard")
 st.markdown(f'<p class="small">{period[0]:%d %b %Y} – {period[1]:%d %b %Y} · Sales, Marketing and '
             f'Supply Chain views · all figures react to the sidebar filters</p>', unsafe_allow_html=True)
 
@@ -479,7 +482,7 @@ with t_sales:
     days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     hm = hm.reindex([d for d in days_order if d in hm.index])
     hm.columns = [c.strftime("%b") for c in hm.columns]
-    fig = px.imshow(hm, aspect="auto", color_continuous_scale="Blues", title="Revenue by weekday and month")
+    fig = px.imshow(hm, aspect="auto", color_continuous_scale="RdPu", title="Revenue by weekday and month")
     show(fig, 320)
 
     st.subheader("Cities and categories")
@@ -488,7 +491,7 @@ with t_sales:
         cg = half_growth(df, "City").sort_values("Revenue", ascending=False).head(15)
         cg["City"] = cg["City"].astype(str).str.title()
         fig = px.bar(cg.sort_values("Revenue"), x="Revenue", y="City", orientation="h", color="Growth %",
-                     color_continuous_scale="RdYlGn", range_color=(-50, 50),
+                     color_continuous_scale=GROWTH_SCALE, range_color=(-50, 50),
                      title="Top 15 cities (color = H2 vs H1 growth %)")
         fig.update_layout(yaxis_title=None, xaxis_title="₺")
         show(fig, 460)
@@ -497,7 +500,7 @@ with t_sales:
         kg["Category"] = kg["Category"].astype(str)
         kg["Label"] = kg["Category"].map(lambda t: t if len(t) <= 30 else t[:28] + "…")
         fig = px.bar(kg.sort_values("Revenue"), x="Revenue", y="Label", orientation="h", color="Growth %",
-                     color_continuous_scale="RdYlGn", range_color=(-50, 50),
+                     color_continuous_scale=GROWTH_SCALE, range_color=(-50, 50),
                      title="Top 15 categories (color = H2 vs H1 growth %)")
         fig.update_layout(yaxis_title=None, xaxis_title="₺")
         show(fig, 460)
@@ -633,11 +636,11 @@ with t_sc:
               .reindex(index=list("ABC"), columns=list("XYZ"), fill_value=0)
     left, right = st.columns(2)
     with left:
-        fig = px.imshow(count_m, color_continuous_scale="Blues", aspect="auto", title="Number of items per class")
+        fig = px.imshow(count_m, color_continuous_scale="RdPu", aspect="auto", title="Number of items per class")
         fig.update_traces(texttemplate="%{z:,}")
         show(fig, 330)
     with right:
-        show(px.imshow((rev_m / rev_m.values.sum() * 100).round(1), text_auto=True, color_continuous_scale="Blues",
+        show(px.imshow((rev_m / rev_m.values.sum() * 100).round(1), text_auto=True, color_continuous_scale="RdPu",
                        aspect="auto", title="Share of revenue per class (%)"), 330)
     policy = pd.DataFrame({
         "Class": ["AX", "AY", "AZ", "BX", "BY", "BZ", "CX", "CY", "CZ"],
@@ -722,7 +725,7 @@ with t_fc:
         fig.add_scatter(x=fc["Week"], y=fc["High"], mode="lines", line=dict(width=0), showlegend=False,
                         hoverinfo="skip")
         fig.add_scatter(x=fc["Week"], y=fc["Low"], mode="lines", fill="tonexty", line=dict(width=0),
-                        fillcolor="rgba(209,73,91,0.15)", name="80% interval")
+                        fillcolor="rgba(231,90,156,0.18)", name="80% interval")
         fig.add_scatter(x=fc["Week"], y=fc["Forecast"], mode="lines+markers", name=f"Forecast ({best})",
                         line=dict(color=RED, width=3))
         fig.update_layout(title=f"{scope}: weekly {'units' if measure == 'Quantity' else 'net revenue'}",
@@ -734,7 +737,7 @@ with t_fc:
         with left:
             st.markdown("**Model accuracy on the test period**")
             st.dataframe(table.style.format({"MAE": "{:,.0f}", "RMSE": "{:,.0f}", "MAPE %": "{:.1f}"})
-                         .highlight_min(subset=["MAPE %"], color="#D9F2EE"), width="stretch")
+                         .highlight_min(subset=["MAPE %"], color="#F3E1F7"), width="stretch")
         with right:
             st.markdown("**Forecast**")
             st.dataframe(fc.assign(Week=fc["Week"].dt.strftime("%d %b %Y"), Forecast=fc["Forecast"].map(fmt),
