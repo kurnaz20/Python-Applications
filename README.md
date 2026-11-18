@@ -10,7 +10,7 @@ built on the 2020 transaction data (664,154 invoice lines).
 | Tab | Content |
 | --- | --- |
 | Summary | Executive summary and recommendations for each department |
-| Sales | Monthly sales, top categories, cities and titles, weekday sales, order statistics (describe, CV, skewness), correlation heatmap, sales by discount level |
+| Sales | Monthly sales, top categories and cities, dynamic data grouping (the user chooses the group and the metric), order statistics (describe, CV, skewness), sales by discount level, correlation heatmap, top titles |
 | Marketing | RFM customer segments, customer concentration (Pareto), list of at-risk customers |
 | Supply Chain | ABC and XYZ analysis of titles, ABC-XYZ matrix, outlier analysis of order size (IQR rule), units by city |
 | Forecast | Weekly forecast with linear regression, polynomial regression and moving average; models compared with MAE, RMSE and MAPE |
