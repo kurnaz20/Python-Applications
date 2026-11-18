@@ -1,6 +1,6 @@
 """
-B2B Book Distributor - Intelligent Decision Support Dashboard
-ISL467E Management Engineering Applications with Python - Homework I
+Decision Support Dashboard for B2B Book Distributor
+ISL467E Management Engineering Applications with Python Homework I
 
 Departments served: Sales, Marketing, Supply Chain Management
 Run locally:  streamlit run streamlit_app.py
